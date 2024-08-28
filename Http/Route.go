@@ -3,12 +3,15 @@ package Http
 import (
 	"DnsLog/Core"
 	"DnsLog/Dns"
+	"embed"
 	"encoding/json"
 	"fmt"
 	"io"
 	"log"
+	"math/rand"
 	"net"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -248,4 +251,32 @@ func HttpRequestLog(w http.ResponseWriter, r *http.Request) {
 		Ipaddress: clientIp,
 		Time:      time.Now().Unix(),
 	})
+}
+
+//go:embed words.txt
+var wordsFile embed.FS
+
+func ReadAWord() string {
+	// 读取嵌入的文件内容
+	data, err := wordsFile.ReadFile("words.txt")
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	// 将文件内容按行拆分
+	words := strings.Split(string(data), "\n")
+
+	// 生成一个随机索引
+	rand.Seed(time.Now().UnixNano())
+	randomIndex := rand.Intn(len(words))
+
+	return strings.TrimSpace(words[randomIndex])
+}
+
+func GetRandomWord(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprint(w, JsonRespData(RespData{
+		HTTPStatusCode: "200",
+		Msg:            ReadAWord(),
+	}))
+
 }

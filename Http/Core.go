@@ -23,6 +23,7 @@ func ListingHttpManagementServer() {
 	mux.HandleFunc("/api/bulkVerifyDns", BulkVerifyDns)
 	mux.HandleFunc("/api/verifyHttp", verifyHttp)
 	mux.HandleFunc("/api/BulkVerifyHttp", BulkVerifyHttp)
+	mux.HandleFunc("/api/GetRandomWord", GetRandomWord)
 	for _, domain := range Core.Config.HTTP.User {
 		mux.HandleFunc("/"+domain+"/", HttpRequestLog)
 	}

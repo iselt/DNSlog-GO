@@ -4,12 +4,13 @@ import (
 	"DnsLog/Core"
 	"encoding/json"
 	"fmt"
-	"golang.org/x/net/dns/dnsmessage"
 	"log"
 	"net"
 	"strings"
 	"sync"
 	"time"
+
+	"golang.org/x/net/dns/dnsmessage"
 )
 
 var DnsData = make(map[string][]DnsInfo)
